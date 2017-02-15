@@ -70,6 +70,8 @@ public:
         return output;
     }
 
+    unsigned char currentReadBit(){ return read_bit;    }
+    unsigned char currentWriteBit(){    return write_bit;   }
     std::deque<store_type> getCurrentValues(){
         return _values;
     }
