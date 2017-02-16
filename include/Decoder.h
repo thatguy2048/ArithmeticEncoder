@@ -18,7 +18,7 @@ namespace Arithmetic{
             currentRange.first = 0;
             currentRange.second = MAX_COUNT_VALUE;
             currentValue = 0;
-            for(unsigned char i = 0; i < 32; ++i){
+            for(unsigned int i = 0; i < NumberOfBitsInType(currentValue); ++i){
                 currentValue <<= 1;
                 if(bs.numberOfBits() > 0){
                     currentValue += bs.pop_bit()?1:0;
@@ -57,17 +57,6 @@ namespace Arithmetic{
                 if(bs.pop_bit())    currentValue+=1;
             }
             return s;
-        }
-
-        template<typename T>
-        T decodeSymbolType(){
-            T output;
-            unsigned char* o_ptr = (unsigned char*)(&output);
-            unsigned short sz = sizeof(T);
-            for(unsigned short i = 0; i < sz; ++i){
-                o_ptr[i] = decodeSymbol();
-            }
-            return output;
         }
     };
 };//end namespace

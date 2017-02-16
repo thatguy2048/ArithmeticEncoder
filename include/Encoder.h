@@ -59,15 +59,6 @@ namespace Arithmetic{
             }
         }
 
-        //used to encode each byte of a provided value
-        template<typename T>
-        void encodeSymbolType(const T& value){
-            unsigned short sz = sizeof(T);
-            while(sz-->0){
-                encodeSymbol( (ProbabilityModel::symbol_type) ((unsigned char*)&value)[sz] );
-            }
-        }
-
         //Finish encoding, and return a bitstream with the result.
         BitStream endEncoding(){
             count_bits++;

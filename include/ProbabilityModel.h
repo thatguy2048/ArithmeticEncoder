@@ -7,6 +7,7 @@
 #define QUARTER_COUNT_VALUE 0x40000000
 
 #include <utility> //includes pair
+#include <iostream>
 
 template<typename countType, typename symbolType, unsigned int max_size>
 class basic_probabilityModel{
@@ -21,20 +22,26 @@ protected:
 
 public:
 
+    basic_probabilityModel(bool countOneOfEach = false){
+        if(countOneOfEach){
+            for(unsigned int i = 0; i < max_size; ++i){
+                countValue(i);
+            }
+        }
+    }
+
     unsigned int maxSize(){ return max_size;    }
 
     count_type totalCounts(){   return counts[max_size]; }
 
     void countValue(const symbol_type& c){
-        for(unsigned short i = c+1; i < max_size+1; ++i){
+        for(unsigned int i = c+1; i < max_size+1; ++i){
             counts[i]++;
         }
     }
 
     void countValues(const symbol_type* buffer, unsigned int length){
-        while(length-->0){
-            countValue(buffer[length]);
-        }
+        while(length-->0)   countValue(buffer[length]);
     }
 
     count_pair getCount(const symbol_type& c){
@@ -57,28 +64,28 @@ public:
         return getCountScaled(c, range.first, range.second);
     }
 
-    char countWithinIndex(const count_type& count, const short& indx){
+    char countWithinIndex(const count_type& count, const int& indx){
         if(count >= counts[indx+1]) return 1;
         if(count < counts[indx])    return -1;
         return 0;
     }
 
-    unsigned char getSymbolFromCount(const count_type& count,const unsigned short& indxMin, const unsigned short& indxMax){
-        unsigned short indx = (indxMax-indxMin)/2+indxMin;
+    symbol_type getSymbolFromCount(const count_type& count,const unsigned int& indxMin, const unsigned int& indxMax){
+        unsigned int indx = (indxMax-indxMin)/2+indxMin;
         if(count >= counts[indx+1])     return getSymbolFromCount(count,indx, indxMax);
         else if(count < counts[indx])   return getSymbolFromCount(count,indxMin, indx);
         return indx;
     }
 
-    unsigned char getSymbolFromCount(const count_type& count){
+    symbol_type getSymbolFromCount(const count_type& count){
         return getSymbolFromCount(count,0,max_size);
     }
 
-    unsigned char getSymbolFromCount(const count_type& count, const count_type& scaledDenominator){
+    symbol_type getSymbolFromCount(const count_type& count, const count_type& scaledDenominator){
         return getSymbolFromCount((count*totalCounts())/scaledDenominator);
     }
 
-    unsigned char getSymbolFromCount(const count_type& count, const count_pair& range){
+    symbol_type getSymbolFromCount(const count_type& count, const count_pair& range){
         return getSymbolFromCount((((count-range.first)))/((range.second-range.first)/totalCounts()));
     }
 };
