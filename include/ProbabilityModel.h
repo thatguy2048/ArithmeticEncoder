@@ -7,7 +7,6 @@
 #define QUARTER_COUNT_VALUE 0x40000000
 
 #include <utility> //includes pair
-#include <iostream>
 
 template<typename countType, typename symbolType, unsigned int max_size>
 class basic_probabilityModel{
