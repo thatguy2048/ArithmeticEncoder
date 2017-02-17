@@ -33,9 +33,9 @@ public:
 
     count_type totalCounts(){   return counts[max_size]; }
 
-    void countValue(const symbol_type& c){
+    void countValue(const symbol_type& c, unsigned int toAdd = 1){
         for(unsigned int i = c+1; i < max_size+1; ++i){
-            counts[i]++;
+            counts[i] += toAdd;
         }
     }
 
